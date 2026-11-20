@@ -29,9 +29,11 @@ def roi_stats(roi_gray, mask=None):
         return None
     return {
         "mean_intensity": float(np.mean(vals)),
+        "median_intensity": float(np.median(vals)),
         "std_intensity": float(np.std(vals)),
         "min_intensity": float(np.min(vals)),
         "max_intensity": float(np.max(vals)),
+        "local_contrast": float(np.max(vals) - np.min(vals)),
         "pixel_count": int(vals.size),
     }
 

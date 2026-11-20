@@ -173,6 +173,51 @@ EXPLANATIONS = {
         technical="Builds a matrix of co-occurring intensity pairs at a given distance/angle, then computes "
                   "Haralick features (contrast, homogeneity, energy, correlation) from it.",
     ),
+    "candidate_method": dict(
+        title="Candidate-region detection method",
+        simple="Picks which generic rule is used to flag a patch of the image as locally unusual.",
+        technical="'Local intensity deviation' flags pixels far from their local neighbourhood "
+                  "mean in standard-deviation units (a local z-score). 'CLAHE local contrast' "
+                  "flags where adaptive histogram equalization changes the image the most. "
+                  "'Adaptive threshold' flags regions separated from their local background by "
+                  "a Gaussian-weighted local cutoff.",
+        note="These are generic statistical/contrast rules, not a trained detector — results "
+             "require expert interpretation and are never a diagnosis.",
+    ),
+    "candidate_min_area": dict(
+        title="Minimum candidate area",
+        simple="The smallest patch size (in pixels) that counts as a candidate region.",
+        technical="Connected components smaller than this area (in px) after cleanup are discarded "
+                  "as noise before being reported as candidates.",
+        up="Fewer, larger candidates are kept; small specks are filtered out.",
+        down="More, smaller candidates are kept; more noise/specks may appear.",
+    ),
+    "candidate_max_area": dict(
+        title="Maximum candidate area",
+        simple="The largest patch size (in pixels) that still counts as a single candidate region.",
+        technical="Connected components larger than this area are discarded, since very large "
+                  "regions usually represent broad anatomy or lighting rather than a localized "
+                  "feature of interest.",
+        up="Allows larger regions to be reported as single candidates.",
+        down="Splits/excludes large regions, keeping the focus on smaller localized patches.",
+    ),
+    "intensity_sensitivity": dict(
+        title="Intensity / contrast sensitivity",
+        simple="Controls how different a patch has to be from its surroundings before it's flagged.",
+        technical="Threshold applied to the chosen method's local deviation/contrast measure "
+                  "(e.g. a z-score cutoff, or an absolute difference threshold after CLAHE).",
+        up="Higher sensitivity threshold → stricter, fewer candidates (only strong local "
+           "differences are flagged).",
+        down="Lower threshold → more candidates, including subtler or noisier differences.",
+    ),
+    "candidate_kernel": dict(
+        title="Morphological kernel size (candidate cleanup)",
+        simple="Controls how aggressively small/noisy candidate blobs are cleaned up before reporting.",
+        technical="Sets the structuring-element size used for opening (remove small specks) and "
+                  "closing (fill small gaps) on the raw candidate mask.",
+        up="Larger kernel → smoother, more consolidated candidate shapes; can merge nearby blobs.",
+        down="Smaller kernel → finer-grained candidates; more likely to include small noise.",
+    ),
 }
 
 
